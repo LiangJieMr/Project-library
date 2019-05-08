@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>秒　杀</title>
+    <link rel="stylesheet" href="css/miao.css">
+</head>
+<body>
+<div class="mp-content">
+    <ul class="itemlist border-list" id="anti-encrypt" >
+        <li class="mp-single-item" style="bottom: 0px; z-index: 1;">
+            <div class="item-info">
+                <img data-src="img/tata.jpg" class="item-logo" src="img/tata.jpg" style="display: inline;" width="120" height="60">
+                <h4 class="item-discount">秒杀价<em>3.8元</em>&nbsp; &nbsp; &nbsp;&nbsp;原价：98元</h4>
+                <h4 class="item-stitle">Tata-上品折扣1-5折 京10店配货</h4>
+                <p class="item-time" id="item-time"><span class="mp-remain-time"></span></p>
+                <p class="item-source"><span class="item-source-inner">上品折扣</span>    </p>
+                <span id="item-his-safe" class="item-his-safe" style="display:none;"></span>
+            </div>
+            <div class="item-pic">
+                <img class="load-bear" src="img/miao.jpg" style="display: inline;" width="440" height="180">
+            </div>
+            <a href="#" class="mp-item-link" id="mp-item-link" title="Tata-上品折扣1-5折 京10店配货" data-click="{time:1414986097, item:'2839496677'}" onclick="buyItem();return false;"></a></li>
+    </ul>
+</div>
+</body>
+</html>
+<script src="js/jquery-1.11.3.min.js"></script>
+<script>
+    $(function(){
+        var timer = setInterval(getTime,1000);
+        //获取倒计时
+        function getTime(){
+            $.ajax({
+                url : "http://127.0.0.1:8008",
+                success : function(response){
+                    // console.log(response)
+                    var timeEnd = response;
+                    //获取当前时间
+                    var date = new Date();
+                    var time = date.getTime();
+                    //获取时间差
+                    var midTime = timeEnd-time;
+                    // console.log(formatDuring(midTime))
+
+                    if(midTime > 0){
+                        $(".mp-remain-time").html("倒计时：" +formatDuring(midTime))
+                    }else{
+                        $(".mp-remain-time").html("立即秒杀")
+                        $(".item-time").addClass("miaosha")
+                        clearInterval(timer)
+                    }
+                }
+            });
+            // 毫秒数转为时间
+            function formatDuring(mss) {
+                //天
+                var days = parseInt(mss / (1000 * 60 * 60 * 24));
+                var hours = parseInt((mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = parseInt((mss % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = (mss % (1000 * 60)) / 1000;
+                return days + "天" + hours + "小时" + minutes + "分钟" + parseInt(seconds) + "秒";
+            }
+        }
+    })
+</script>
